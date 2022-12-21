@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <context:property-placeholder location="/properties/*.properties"/>
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxTotal" value="${jdbc.maxTotal}"/>
+        <property name="maxIdle"  value="${jdbc.maxIdle}"/>
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+    </bean>
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/><!--管理上面第7行刚刚生成的数据源-->
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/><!--事务管理的注解驱动-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean"><!--生成会话对象-->
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="cn.fvti.core.pojo"/><!--别名-->
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.fvti.core.dao"/><!--自动扫描接口映射器，得到dao对象-->
+    </bean>
+    <context:component-scan base-package="cn.fvti.core.service"/><!--自动扫描-->
+</beans>

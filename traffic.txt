@@ -1,0 +1,104 @@
+create database traffic;
+use traffic;
+
+create table base_dict(
+  dict_id		 varchar(32) PRIMARY KEY,
+  dict_type_code	 varchar(10) NOT NULL,
+  dict_type_name	 varchar(50) NOT NULL ,
+  dict_item_name	 varchar(50) NOT NULL  ,
+  dict_item_code	 varchar(10) DEFAULT NULL ,
+  dict_sort		 int(10) DEFAULT NULL ,
+  dict_enable	 char(1) NOT NULL ,
+  dict_memo 	varchar(100) DEFAULT NULL 
+);
+
+insert  into base_dict(dict_id,dict_type_code,dict_type_name,dict_item_name,dict_item_code,dict_sort,dict_enable,dict_memo) values 
+('1','001','用户行业','教育培训 ',NULL,1,'1',NULL),
+('18','005','客户状态','基础客户',NULL,1,'1',NULL),
+('19','005','客户状态','潜在客户',NULL,2,'1',NULL),
+('2','001','客户行业','IT行业',NULL,2,'1',NULL),
+('20','005','客户状态','成功客户',NULL,3,'1',NULL),
+('21','005','客户状态','无效客户',NULL,4,'1',NULL),
+('22','006','客户级别','普通客户',NULL,1,'1',NULL),
+('23','006','客户级别','警察',NULL,2,'1',NULL),
+('24','007','商机状态','意向客户',NULL,1,'1',NULL),
+('32','009','商机来源','自行注册',NULL,1,'1',NULL),
+('3','001','客户行业','公民',NULL,3,'1',NULL),
+('4','001','客户行业','警察',NULL,4,'1',NULL),
+('5','001','客户行业','房地产',NULL,5,'1',NULL),
+('6','002','客户信息来源','公安机关注册',NULL,1,'1',NULL),
+('7','002','客户信息来源','商业活动注册',NULL,2,'1',NULL);
+
+
+
+
+CREATE TABLE customer (
+  cust_id 		int(32)  AUTO_INCREMENT  PRIMARY KEY,
+  cust_name	 varchar(50) NOT NULL ,
+  cust_user_id 	int(32) DEFAULT NULL ,
+  cust_create_id	 int(32) DEFAULT NULL ,
+  cust_source 	varchar(50) DEFAULT NULL ,
+  cust_industry	 varchar(50) DEFAULT NULL ,
+  cust_level 	varchar(32) DEFAULT NULL ,
+  cust_linkman 	varchar(50) DEFAULT NULL ,
+  cust_phone 	varchar(64) DEFAULT NULL ,
+  cust_mobile 	varchar(16)  UNIQUE ,
+  cust_zipcode 	varchar(10) DEFAULT NULL ,
+  cust_address 	varchar(100) DEFAULT NULL ,
+  cust_count	 int DEFAULT 0,
+  cust_policeno 	int(6) DEFAULT 0,
+  cust_license	 int(32) DEFAULT 12,
+  cust_createtime 	datetime DEFAULT NULL
+);
+
+insert  into customer(cust_id,cust_name,cust_user_id,cust_create_id,cust_source,cust_industry,cust_level,cust_linkman,cust_phone,cust_mobile,cust_zipcode,cust_address,cust_createtime) values 
+(14,'小张',NULL,1,'7','3','23','小雪','010-88888887','13848345378','350096','福州上街','2020-04-08 16:32:01')
+,(15,'小韩',NULL,2,'7','3','23','小雪','010-88888887','13743453566','350096','福州鸿尾','2019-04-08 16:32:01')
+,(16,'小李',NULL,3,'6','2','22','小雪','010-88888887','13345383248','350096','福州南平','2018-04-08 16:32:01');
+
+
+CREATE TABLE sys_user(
+  user_id		 int(32)   		PRIMARY KEY AUTO_INCREMENT ,
+  user_code	 varchar(32) 	NOT NULL,
+  user_name	 varchar(50)	 NOT NULL,
+  user_password 	 varchar(32)	 NOT NULL,
+  user_state 	 int(1) 		NOT NULL
+);
+INSERT INTO sys_user values(1,'A0001','小铭','123',1);
+
+CREATE TABLE cars(
+cid	 int(32)	 	PRIMARY KEY AUTO_INCREMENT,
+cname       varchar(32) 	NOT NULL,
+cuser         varchar(32)	 NOT NULL,
+ccolor	 varchar(32) 	NOT NULL,
+cbirthday   datetime                 NOT NULL,
+cno           varchar(16) 	NOT NULL UNIQUE,
+cust_id      int(32)                 REFERENCES customer(cust_id)
+);
+
+
+
+INSERT INTO cars values (1,'大众','A5467','红色','2020-04-08 20:32:01','闽ASM001','14');
+ 
+CREATE TABLE  violation(
+vid		 int(32)		PRIMARY KEY AUTO_INCREMENT,
+vaddress		 varchar(32)	NOT NULL,
+vthing      		 varchar(32)              NOT NULL,
+vmoney   		 int(64)	                NOT NULL,
+vstare                        varchar(6)                DEFAULT '未处理',
+cust_id		 int(32)                     REFERENCES    customer(cust_id),
+cid	        	 int(32)		REFERENCES  cars(cid),
+vtime                	datetime,
+vlicense                     int(32)                      DEFAULT 0                
+);
+
+INSERT INTO violation VALUES (1,'福州闽侯县鸿尾乡古洋村','一辆红色大众会车时使用远光灯',50,'未处理',14,1,'2018-04-08 16:32:01',1);
+
+
+
+
+
+
+
+
+

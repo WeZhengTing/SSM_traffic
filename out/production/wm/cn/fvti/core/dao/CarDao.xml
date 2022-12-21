@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fvti.core.dao.CarDao">
+    <select id="findCarByCno" parameterType="String" resultType="Integer">
+    SELECT cid FROM cars  WHERE cno=#{cno}
+</select>
+
+    <select id="finduidByCid" parameterType="Integer" resultType="Integer">
+        SELECT cust_id FROM cars WHERE cid=#{cid}
+     </select>
+
+
+    <update id="updateCar" parameterType="cars">
+        update cars
+        <set>
+            <if test="cname   != null">
+                cname=#{cname},
+            </if>
+            <if test="cuser!= null">
+                cuser=#{cuser},
+            </if>
+            <if test="ccolor!= null">
+                ccolor =#{ccolor},
+            </if>
+            <if test="cbirthday!= null">
+                cbirthday=#{cbirthday},
+            </if>
+            <if test="cust_id != null">
+                cust_id=#{cust_id},
+            </if>
+            <if test="cno  != null">
+                cno =#{cno},
+            </if>
+        </set>
+        where cid=#{cid}
+    </update>
+
+    <insert id="createcar" parameterType="cars">
+insert into cars
+(cname,cuser,ccolor,cbirthday,cno,cust_id)
+values
+(
+#{cname},#{cuser},#{ccolor},#{cbirthday},#{cno},#{cust_id}
+)
+</insert>
+</mapper>

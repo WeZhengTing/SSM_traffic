@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fvti.core.dao.ViolationDao">
+    <select id="selectViolationList" parameterType="violation" resultType="violation">
+        SELECT v.vid,v.vaddress,v.vthing,v.vmoney,v.vlicense,v.vtime,c.cno,v.vstare,v.cid FROM violation v,cars c WHERE c.cid=v.cid
+    </select>
+    <select id="selectViolationListCount" parameterType="violation" resultType="Integer">
+        select count(*) from violation where cid=#{cid}
+    </select>
+    <select id="vgetuid" parameterType="Integer" resultType="violation">
+        select * from violation where vid=#{vid}
+    </select>
+
+    <update id="updateviolation" parameterType="violation">
+        update violation
+        <set>
+            <if test="vaddress != null">
+                vaddress=#{vaddress},
+            </if>
+            <if test="vthing!= null">
+                vthing  =#{vthing},
+            </if>
+            <if test="vmoney!= null">
+                vmoney =#{vmoney},
+            </if>
+            <if test="vstare != null">
+                vstare=#{vstare},
+            </if>
+            <if test="cust_id != null">
+                cust_id=#{cust_id},
+            </if>
+            <if test="cid != null">
+                cid=#{cid},
+            </if>
+            <if test="vtime  != null">
+                vtime =#{vtime},
+            </if>
+            <if test="vlicense!= null">
+                vlicense=#{vlicense},
+            </if>
+
+        </set>
+        where vid=#{vid}
+    </update>
+
+<insert id="insertviolation" parameterType="violation" >
+    insert into violation (vaddress,vthing,vmoney,cust_id,cid,vtime,vlicense)
+    values (#{vaddress},#{vthing},#{vmoney},#{cust_id},#{cid},#{vtime},#{vlicense})
+</insert>
+
+
+
+
+</mapper>

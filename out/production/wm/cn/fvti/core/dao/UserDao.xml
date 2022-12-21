@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fvti.core.dao.UserDao">
+    <select id="findUser" parameterType="String" resultType="user">
+select * from sys_user where user_code=#{usercode} and user_password=#{password} and user_state="1"
+</select>
+
+    <insert id="user_sign" parameterType="String">
+    insert into sys_user (user_code,user_password,user_name,user_state) values (#{user_code},#{user_password},#{user_name},"1")
+</insert>
+
+
+</mapper>
